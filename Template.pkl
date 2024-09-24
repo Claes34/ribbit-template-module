@@ -1,0 +1,85 @@
+module Template
+
+hidden const pathRegex = Regex(#"(\/)?([^\/\\]+(\/)?)+"#)
+hidden const variableRegex = Regex("[a-zA-Z0-9_-]*")
+
+/// name of the template
+name: String(!isEmpty)
+
+/// description of the template
+description: String(!isEmpty)
+
+/// path of the template
+path: String(!isEmpty && matches(pathRegex))
+
+/// list of relative path to exclude from template when generating a project.
+/// Wildcard capable.
+exclude: List<String(!isEmpty && matches(pathRegex))> = List()
+
+/// list of variable collectors
+variableCollectors: List<VariableCollector> = List()
+
+/// list of dependencies for project generation
+dependencies: List<Dependency> = List()
+
+/// list of OccurencesReplacementsFile, one for each file where occurrences replacements are necessary
+occurencesReplacementsFiles: List<OccurencesReplacementsFile> = List()
+
+/// list of MoveFileOrFolder, defines all files that needs to be moved/renamed
+mvFilesOrFolders: List<MoveFileOrFolder> = List()
+
+/// list of PostGenerationStep, custom script based steps executed after project generation is done.
+postGenerationSteps: List<PostGenerationStep> = List()
+
+// ##### CLASSES #####
+
+class Command {
+    command: String(!isEmpty)
+    allowUserInput: Boolean = false
+}
+
+class VariableCollector {
+    /// name of the variable
+    variable: String(!isEmpty && matches(variableRegex))
+    prompt: String
+    hint: String?
+    regex: String(!isEmpty)?
+    defaultValue: String?
+    choices: List<String(!isEmpty)>(!isEmpty)? = null
+}
+
+class Dependency {
+    name: String(!isEmpty)
+    checkCmd: Command
+    installCmd: Command?
+    predicate: String(!isEmpty)?
+    mandatory: Boolean = false
+}
+
+class Replacement {
+    input: String(!isEmpty)
+    output: String
+    predicate: String(!isEmpty)?
+}
+
+class OccurencesReplacementsFile {
+    filePath: String(!isEmpty && matches(pathRegex))
+    replacements: List<Replacement>
+}
+
+class MoveFileOrFolder {
+    inputPath: String(!isEmpty && matches(pathRegex))
+    outputPath: String(!isEmpty && matches(pathRegex))
+    isFolder: Boolean
+    predicate: String(!isEmpty)?
+}
+
+class PostGenerationStep {
+    name: String
+    description: String?
+    cmd: Command
+    execInProjectFolder: Boolean
+    predicate: String(!isEmpty)?
+    userConsent: String(!isEmpty)?
+    successMandatory: Boolean = false
+}
