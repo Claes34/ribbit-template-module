@@ -12,24 +12,24 @@ description: String(!isEmpty)
 /// path of the template
 path: String(!isEmpty && matches(pathRegex))
 
-/// list of relative path to exclude from template when generating a project.
+/// Listing of relative path to exclude from template when generating a project.
 /// Wildcard capable.
-exclude: List<String(!isEmpty && matches(pathRegex))> = List()
+exclude: Listing<String(!isEmpty && matches(pathRegex))> = Listing()
 
-/// list of variable collectors
-variableCollectors: List<VariableCollector> = List()
+/// Listing of variable collectors
+variableCollectors: Listing<VariableCollector> = Listing()
 
-/// list of dependencies for project generation
-dependencies: List<Dependency> = List()
+/// Listing of dependencies for project generation
+dependencies: Listing<Dependency> = Listing()
 
-/// list of OccurencesReplacementsFile, one for each file where occurrences replacements are necessary
-occurencesReplacementsFiles: List<OccurencesReplacementsFile> = List()
+/// Listing of OccurencesReplacementsFile, one for each file where occurrences replacements are necessary
+occurencesReplacementsFiles: Listing<OccurencesReplacementsFile> = Listing()
 
-/// list of MoveFileOrFolder, defines all files that needs to be moved/renamed
-mvFilesOrFolders: List<MoveFileOrFolder> = List()
+/// Listing of MoveFileOrFolder, defines all files that needs to be moved/renamed
+mvFilesOrFolders: Listing<MoveFileOrFolder> = Listing()
 
-/// list of PostGenerationStep, custom script based steps executed after project generation is done.
-postGenerationSteps: List<PostGenerationStep> = List()
+/// Listing of PostGenerationStep, custom script based steps executed after project generation is done.
+postGenerationSteps: Listing<PostGenerationStep> = Listing()
 
 // ##### CLASSES #####
 
@@ -64,7 +64,7 @@ class Replacement {
 
 class OccurencesReplacementsFile {
     filePath: String(!isEmpty && matches(pathRegex))
-    replacements: List<Replacement>
+    replacements: Listing<Replacement>
 }
 
 class MoveFileOrFolder {
